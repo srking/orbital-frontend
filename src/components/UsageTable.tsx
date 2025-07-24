@@ -11,14 +11,14 @@ import {
 import {UsageRow} from "@/models";
 import {useState} from "react";
 
-function getHeaderSortIcon(direction: SortDirection | false): string | null {
+function getHeaderSortIcon(direction: SortDirection | false): string {
     switch (direction) {
         case 'asc':
             return ' 🔼';
         case 'desc':
             return ' 🔽';
         default:
-            return null;
+            return '';
     }
 }
 
@@ -85,11 +85,11 @@ export default function UsageTable({ data }: { data: UsageRow[] }) {
                                     onClick={header.column.getToggleSortingHandler()}
                                     title={header.column.getCanSort() ? getHeaderSortTitle(header.column.getNextSortingOrder()) : undefined}
                                 >
-                                    {flexRender(
+                                    {`${flexRender(
                                         header.column.columnDef.header,
                                         header.getContext()
-                                    )}
-                                    {getHeaderSortIcon(header.column.getIsSorted())}
+                                    )}${getHeaderSortIcon(header.column.getIsSorted())}`}
+
                                 </div>
                             </th>
                         ))}
