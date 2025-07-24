@@ -1,4 +1,17 @@
 import Image from "next/image";
+import UsageTable from "@/components/UsageTable";
+import {UsageRow} from "@/models";
+
+const data: UsageRow[] = [{
+  messageID: 1000,
+  timestamp: '29-04-2024 02:08',
+  reportName: 'Tenant Obligations Report',
+  creditsUsed: 79.0,
+}, {
+  messageID: 1001,
+  timestamp: '29-04-2024 03:25',
+  creditsUsed: 5.20,
+}];
 
 export default function Home() {
   return (
@@ -50,6 +63,7 @@ export default function Home() {
             Read our docs
           </a>
         </div>
+        <UsageTable data={data} />
       </main>
       <footer className="row-start-3 flex gap-[24px] flex-wrap items-center justify-center">
         <a
