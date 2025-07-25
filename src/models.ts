@@ -1,6 +1,11 @@
 export type UsageRow = {
-    messageID: number;
+    message_id: number;
     timestamp: string;
-    reportName?: string;
-    creditsUsed: number;
+    report_name?: string;
+    credits_used: number;
+}
+
+export type DailyUsage = {
+    date: string;
+    credits_used: number;
 }

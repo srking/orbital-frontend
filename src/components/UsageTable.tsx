@@ -4,12 +4,13 @@ import {
     createColumnHelper,
     flexRender,
     getCoreRowModel,
-    getSortedRowModel, SortDirection,
-    SortingState,
+    getSortedRowModel,
+    SortDirection,
     useReactTable
 } from "@tanstack/react-table";
 import {UsageRow} from "@/models";
-import {useState} from "react";
+import useUrlSortOptions from "@/hooks/useUrlSortOptions";
+import {getDateHourMinuteFormat} from "@/helpers/helpers";
 
 function getHeaderSortIcon(direction: SortDirection | false): string {
     switch (direction) {
@@ -18,7 +19,7 @@ function getHeaderSortIcon(direction: SortDirection | false): string {
         case 'desc':
             return ' 🔽';
         default:
-            return '';
+            return ' 📶';
     }
 }
 
@@ -33,33 +34,35 @@ function getHeaderSortTitle(nextSortOrder: SortDirection | false): string {
     }
 }
 
-export default function UsageTable({ data }: { data: UsageRow[] }) {
+export default function UsageTable({ data, pathname, searchParams }: { data: UsageRow[], pathname: string, searchParams: URLSearchParams }) {
 
     const columnHelper = createColumnHelper<UsageRow>();
 
     const columns = [
-        columnHelper.accessor('messageID', {
+        columnHelper.accessor('message_id', {
             enableSorting: false,
             header: 'Message ID',
         }),
         columnHelper.accessor('timestamp', {
             enableSorting: false,
             header: 'Timestamp',
+            cell: ({ row }) => getDateHourMinuteFormat(row.original.timestamp)
         }),
-        columnHelper.accessor('reportName', {
+        columnHelper.accessor('report_name', {
             enableSorting: true,
             header: 'Report Name',
             sortDescFirst: false,
             sortUndefined: 'last',
         }),
-        columnHelper.accessor('creditsUsed', {
+        columnHelper.accessor('credits_used', {
             enableSorting: true,
             header: 'Credits Used',
             sortDescFirst: false,
+            cell: ({ row }) => row.original.credits_used.toFixed(2),
         }),
     ];
 
-    const [sorting, setSorting] = useState<SortingState>([]);
+    const [sorting, setSorting] = useUrlSortOptions({ pathname, searchParams });
 
     const table = useReactTable({
         data,
@@ -74,12 +77,12 @@ export default function UsageTable({ data }: { data: UsageRow[] }) {
     });
 
     return (
-        <table>
+        <table className="table-fixed border-collapse w-full">
             <thead>
                 {table.getHeaderGroups().map((headerGroup) => (
                     <tr key={headerGroup.id}>
                         {headerGroup.headers.map((header) => (
-                            <th key={header.id}>
+                            <th key={header.id} className="text-left">
                                 <div
                                     className={header.column.getCanSort() ? 'cursor-pointer select-none' : ''}
                                     onClick={header.column.getToggleSortingHandler()}
@@ -88,7 +91,7 @@ export default function UsageTable({ data }: { data: UsageRow[] }) {
                                     {`${flexRender(
                                         header.column.columnDef.header,
                                         header.getContext()
-                                    )}${getHeaderSortIcon(header.column.getIsSorted())}`}
+                                    )}${header.column.getCanSort() ? getHeaderSortIcon(header.column.getIsSorted()) : ''}`}
 
                                 </div>
                             </th>
@@ -98,7 +101,7 @@ export default function UsageTable({ data }: { data: UsageRow[] }) {
             </thead>
             <tbody>
             {table.getRowModel().rows.map((row) => (
-                <tr key={row.id}>
+                <tr key={row.id} className="even:bg-gray-50 odd:bg-white">
                     {row.getVisibleCells().map(cell => (
                         <td key={cell.id}>
                             {flexRender(cell.column.columnDef.cell, cell.getContext())}
