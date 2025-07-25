@@ -1,36 +1,32 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Installation
 
-## Getting Started
+1. Clone this repo to a directory of your choice.
+2. In the repo directory install dependencies using NPM:
 
-First, run the development server:
+   `npm install`
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
+## Run the server
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+After installation is complete, the server can be started using the following command:
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+`npm run dev`
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+## Run the tests
 
-## Learn More
+After installation is complete, the test suite can with the following command:
 
-To learn more about Next.js, take a look at the following resources:
+`npm test`
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+## Notes
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+The data for the chart & table loads asynchronously. This is to prevent a long page load for the user while the data is fetched.
 
-## Deploy on Vercel
+I have tried to keep dependencies on the NextJS framework separate from components, for testability & potential future re-use. This is why the URL pathname & search params are passed as parameters.
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+NextJS was chosen as a recommended framework for a new React project, as well as aligning with existing usage.
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+Issues were encountered unit test the chart create in Recharts. With more time a workaround would be found.
+
+No E2E/integration tests are present due to time constraints.
+
+Error handling for the case of the data not being available is also not present due to time constraints.
